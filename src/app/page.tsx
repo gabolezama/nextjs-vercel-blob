@@ -17,6 +17,14 @@ export default function AvatarUploadPage() {
     try {
       event.preventDefault();
   
+      if (!inputFileRef.current?.files) {
+        throw new Error('No file selected');
+      }
+
+      if (inputFileRef.current?.size > 5 * 1024 * 1024) {
+        throw new Error('El archivo es mayor a 5MB');
+      }
+      
       const file = inputFileRef.current.files[0];
   
       await upload(file.name, file, {
