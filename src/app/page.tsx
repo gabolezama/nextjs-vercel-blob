@@ -6,12 +6,14 @@ import { upload } from '@vercel/blob/client';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import { useState, useRef, FormEvent, useEffect } from 'react';
 import { getUploadedList, handleDelete } from '@/services';
+import { SkeletonList } from '@/components/SkeletonList';
  
 export default function AvatarUploadPage() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [uploadedList, setUploadedList] = useState<any>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     try {
       event.preventDefault();
   
@@ -21,8 +23,7 @@ export default function AvatarUploadPage() {
         access: 'public',
         handleUploadUrl: '/api/upload',
       });
-      const list = await getUploadedList();
-      setUploadedList(list);
+      setRefresh(!refresh);
       
     } catch (error) {
       console.log(error);
@@ -30,9 +31,11 @@ export default function AvatarUploadPage() {
   }
   
   useEffect(() =>{
+    setLoading(true);
     (async ()=>{
-      const list = await getUploadedList();
+      const list = await getUploadedList();      
       setUploadedList(list);
+      setLoading(false);
     })()
   },[refresh]);
   return (
@@ -55,15 +58,20 @@ export default function AvatarUploadPage() {
         </button>
       </form>
       <div className="w-full max-w-md mt-8">
-          {uploadedList?.map((image: any, i: number) => (
-            <div key={`${i}_${image.pathname}`}  className="flex items-center justify-between p-2 border-b border-gray-200">
-              <a href={`${image.downloadUrl}`} className="text-blue-600 underline truncate w-3/4">
-                {image.pathname}
-              </a>
-              <EditDialog name={image.pathname} parent={<Button> <FaPen/></Button>}/>
-              <Button onClick={()=>{ handleDelete(image.url, image.pathnam), setRefresh(!refresh)}}> <FaTrash/></Button>
-            </div> 
-          ))}
+          { loading ? 
+              Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonList key={i} />
+              )):
+              uploadedList.map((image: any, i: number) => (
+                <div key={`${i}_${image.pathname}`}  className="flex items-center justify-between p-2 border-b border-gray-200">
+                  <a href={`${image.downloadUrl}`} className="text-blue-600 underline truncate w-3/4">
+                    {image.pathname}
+                  </a>
+                  <EditDialog name={image.pathname} parent={<Button><FaPen/></Button>}/>
+                  <Button onClick={()=>{handleDelete(image.url, image.pathnam); setRefresh(!refresh)}}><FaTrash/></Button>
+                </div> 
+              ))
+          }
       </div>  
     </div>
   );
