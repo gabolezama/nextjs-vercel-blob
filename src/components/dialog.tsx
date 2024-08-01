@@ -1,4 +1,3 @@
-'use client';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -22,7 +21,7 @@ export function EditDialog({
     parent: React.ReactNode,
   }
 ) {
-    const[newName, setNewName]=useState(name || '')
+    const[newName, setNewName]=useState<string>(name)
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,9 +31,6 @@ export function EditDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when youre done.
-          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
