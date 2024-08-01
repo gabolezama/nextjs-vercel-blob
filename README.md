@@ -17,7 +17,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Description
-This web application, built with Next.js, TypeScript, and React, is deployed on Vercel. It allows users to upload PNG, JPG, and LEGO files. Uploaded files are displayed in a list, with a skeleton screen shown during loading.
+This web application, built with Next.js, TypeScript, and React, is deployed on Vercel. It allows users to upload PNG and JPG files. Uploaded files are displayed in a list, with a skeleton screen shown during loading.
 
 ## Usage
 
@@ -38,3 +38,5 @@ This web application, built with Next.js, TypeScript, and React, is deployed on 
 - **TypeScript**: A superset of JavaScript that adds static typing.
 - **React**: A JavaScript library for building user interfaces.
 - **Vercel**: A cloud platform for static sites and serverless functions.
+- **SHADCN/UI**: A styles components library.
+- **GIT/GITHUB**: Tools for version control and managing local and remote repositories.
